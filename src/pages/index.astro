@@ -12,6 +12,7 @@ import { type CollectionEntry } from "astro:content";
 import { getSiteStats } from "@lib/contentParser";
 import { sortByDate } from "@lib/sortFunctions";
 import { getEntries } from "@lib/contentParser";
+import RecentComments from "@components/common/RecentComments.astro";
 import RecommendedReadCardComponent from "@components/blog/RecommendedReadCard.astro";
 // 浏览量组件已移除
 // showInfo 函数将在需要时动态导入
@@ -35,7 +36,7 @@ const latestNotes = (await getEntries(
 )) as CollectionEntry<"notes">[];
 
 // 取前6篇作为特色文章
-const featuredArticles = publishedPosts.slice(0, 6).map((post) => ({
+const featuredArticles = publishedPosts.slice(0, 8).map((post) => ({
   id: post.id,
   slug: post.id,
   title: post.data.title,
@@ -53,7 +54,7 @@ const featuredArticles = publishedPosts.slice(0, 6).map((post) => ({
 
 const featuredPosts = (
   (await getEntries("blog", sortByDate)) as BlogEntry[]
-).slice(0, 6);
+).slice(0, 8);
 
 // 获取分类数据
 // 从所有文章中提取分类
@@ -203,7 +204,11 @@ const siteStats = await getSiteStats();
 
         <!-- Site Messages -->
         <LiquidGlass heavy >
-          <HomeNotesPreview entries={latestNotes} limit={6} />
+          <HomeNotesPreview entries={latestNotes} limit={5} />
+        </LiquidGlass>
+
+        <LiquidGlass heavy >
+          <RecentComments limit={5} />
         </LiquidGlass>
 
         <!-- </section> -->
